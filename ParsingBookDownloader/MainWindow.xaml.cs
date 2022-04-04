@@ -78,9 +78,9 @@ namespace ParsingBookDownloader
                     return;
             }
             WebClient client = new WebClient();
-            var uri = new Uri(books[LB.SelectedIndex].Url);
+            var uri = books[LB.SelectedIndex].Url;
             //if (new Uri(books[LB.SelectedIndex].Url) != null)
-            if (uri == null)
+            if (uri.Contains(uri))
             {
                 throw new Exception("Ссылка не существует");
             }
@@ -93,13 +93,14 @@ namespace ParsingBookDownloader
                 string path = $"{folder.SelectedPath}\\{books[LB.SelectedIndex].Name}.txt";
 
                 //client.DownloadFileAsync(new Uri(books[LB.SelectedIndex].Url), path);
-                client.DownloadFileAsync(uri, path);
-                //  System.Windows.Forms.MessageBox.Show("Скачано!");
+                client.DownloadFileAsync(new Uri(uri), path);
+                //System.Windows.Forms.MessageBox.Show("Скачано!");
 
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message);
+                //System.Windows.MessageBox.Show(ex.Message);
+                System.Windows.Forms.MessageBox.Show(ex.Message);
             }
 
 

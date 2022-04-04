@@ -25,9 +25,9 @@ namespace ParsingBookDownloader
                 index = site.IndexOf("/");
                 if (index >= 0)
                 {
-                    //url = baseUrl + site.Remove(index);
+                    url = baseUrl + site.Remove(index);
                     //url = baseUrl + "/txt.php?id" + "=" + site.Remove(index);
-                    url = null;
+                    //url = null;
                     //site = site.Remove(0, index + 2);
                     site = site.Remove(0, index + 3);
                     name = site.Remove(site.IndexOf("</a>"));
