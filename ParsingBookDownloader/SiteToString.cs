@@ -8,15 +8,29 @@ using System.Threading.Tasks;
 
 namespace ParsingBookDownloader
 {
-    class SiteToString
+    public class SiteToString
     {
-        public string GetSite(string Url)
+        public string GetHtmlPage(string url, Encoding encoding = null)
         {
-            WebRequest request = WebRequest.Create(Url);
+
+            WebRequest request = WebRequest.Create(url);
+
             WebResponse response = request.GetResponse();
+
             Stream stream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(stream);
-            return reader.ReadToEnd();
+
+            StreamReader sr;
+
+            if (encoding == null)
+            {
+                sr = new StreamReader(stream);
+            }
+            else
+            {
+                sr = new StreamReader(stream, encoding);
+            }
+
+            return sr.ReadToEnd();
         }
     }
 }

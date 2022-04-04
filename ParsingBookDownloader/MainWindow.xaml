@@ -10,25 +10,19 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="10*"/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
-        <TextBox x:Name="TB"></TextBox>
-        <ListBox x:Name="LB" Grid.Row="1"></ListBox>
-        <Button  HorizontalAlignment="Right" Click="Button_Click">Найти</Button>
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
+        <WrapPanel HorizontalAlignment="Center" Height="30">
+            <TextBox x:Name="TextSearch" Width="100"/>
+            <Button x:Name="ButtonSearch" Click="ButtonSearch_Click">Поиск</Button>
+        </WrapPanel>
 
-            </Grid.ColumnDefinitions>
-            <Button Click="Button_Click_1" Height="32" VerticalAlignment="Bottom">Путь сохранения</Button>
-            <Button  Grid.Column="1" Click="Button_Click_2">Скачать</Button>
-            <Button  Grid.Column="2" Click="Button_Click_3">Скачать Все</Button>
-        </Grid>
-        <ProgressBar  x:Name="PB" Grid.Row="3"></ProgressBar>
-        <Label Content="Label" Grid.Row="3" HorizontalAlignment="Center" x:Name="LB1"></Label>
+        <ListBox x:Name="LB" Grid.Row="1"/>
+
+        <WrapPanel Grid.Row="2" HorizontalAlignment="Center">
+            <Button Click="ButtonSelectPath" Margin="5">Выбрать Путь</Button>
+            <Button Click="ButtonSave" Margin="5">Сохранить</Button>
+        </WrapPanel>
 
     </Grid>
 </Window>

@@ -22,93 +22,46 @@ namespace ParsingBookDownloader
     /// </summary>
     public partial class MainWindow : Window
     {
-        FolderBrowserDialog folder;
         List<Book> books;
+        public static FolderBrowserDialog folder;
         public MainWindow()
         {
             InitializeComponent();
+            books = new List<Book>();
             folder = new FolderBrowserDialog();
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ButtonSearch_Click(object sender, RoutedEventArgs e)
         {
             LB.Items.Clear();
-            SiteToString siteToString = new SiteToString();
-            string site = siteToString.GetSite("https://tululu.org/search/?q=" + TB.Text);
-            BooksParser parser = new BooksParser();
-            books = parser.GetBooks(site);
+            BookParserTululuDotOrg site = new BookParserTululuDotOrg(TextSearch.Text);
 
-            foreach (Book x in books)
+            books = site.GetBooks();
+
+            foreach (Book b in books)
             {
-                LB.Items.Add(x.Name);
-                //LB.Items.Add(x.Url);
+                LB.Items.Add($"{b.Name} ({b.Author})");
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void ButtonSelectPath(object sender, RoutedEventArgs e)
         {
             folder.ShowDialog();
         }
-        string GenerateFilename(string bookName)
-        {
-            string result = "";
-            for (int i = 0; i < bookName.Length; i++)
-            {
-                if (bookName[i] == '?' || bookName[i] == '\"' || bookName[i] == '|'
-                    || bookName[i] == '\\' || bookName[i] == ' ' || bookName[i] == '*'
-                    || bookName[i] == '«'
-                    || bookName[i] == '»' || bookName[i] == '>' || bookName[i] == '<'
-                    || bookName[i] == ':' || bookName[i] == '/' || bookName[i] == '\n')
-                    continue;
-                result += bookName[i];
-            }
-            if (result.Length == 0)
-                result = "book";
-            result += ".txt";
-            return result;
-        }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void ButtonSave(object sender, RoutedEventArgs e)
         {
-            if (LB.SelectedIndex < 0)
-                return;
+            if (LB.SelectedIndex < 0) return;
+
             if (folder.SelectedPath.Length == 0 || folder.SelectedPath == null)
             {
                 if (folder.ShowDialog() != System.Windows.Forms.DialogResult.OK)
-                    return;
-            }
-            WebClient client = new WebClient();
-            var uri = new Uri(books[LB.SelectedIndex].Url);
-            //if (new Uri(books[LB.SelectedIndex].Url) != null)
-            if (uri == null)
-            {
-                throw new Exception("Ссылка не существует");
-            }
-            try
-            {
-                /*string path = folder.SelectedPath + "\\"
-                 + GenerateFilename(books[LB.SelectedIndex].Name);*/
-                /*string path = folder.SelectedPath + "\\"
-                     + books[LB.SelectedIndex].Name + ".txt";*/
-                string path = $"{folder.SelectedPath}\\{books[LB.SelectedIndex].Name}.txt";
-
-                //client.DownloadFileAsync(new Uri(books[LB.SelectedIndex].Url), path);
-                client.DownloadFileAsync(uri, path);
-                //  System.Windows.Forms.MessageBox.Show("Скачано!");
-
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show(ex.Message);
+                { return; }
             }
 
-
+            DownloadWindow dw = new DownloadWindow(books[LB.SelectedIndex], folder.SelectedPath);
+            dw.ShowDialog();
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 
 }
