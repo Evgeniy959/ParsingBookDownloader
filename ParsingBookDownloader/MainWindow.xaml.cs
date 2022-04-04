@@ -49,24 +49,6 @@ namespace ParsingBookDownloader
         {
             folder.ShowDialog();
         }
-        string GenerateFilename(string bookName)
-        {
-            string result = "";
-            for (int i = 0; i < bookName.Length; i++)
-            {
-                if (bookName[i] == '?' || bookName[i] == '\"' || bookName[i] == '|'
-                    || bookName[i] == '\\' || bookName[i] == ' ' || bookName[i] == '*'
-                    || bookName[i] == '«'
-                    || bookName[i] == '»' || bookName[i] == '>' || bookName[i] == '<'
-                    || bookName[i] == ':' || bookName[i] == '/' || bookName[i] == '\n')
-                    continue;
-                result += bookName[i];
-            }
-            if (result.Length == 0)
-                result = "book";
-            result += ".txt";
-            return result;
-        }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
@@ -78,37 +60,49 @@ namespace ParsingBookDownloader
                     return;
             }
             WebClient client = new WebClient();
-            var uri = books[LB.SelectedIndex].Url;
-            //if (new Uri(books[LB.SelectedIndex].Url) != null)
-            if (uri.Contains(uri))
-            {
-                throw new Exception("Ссылка не существует");
-            }
             try
             {
                 /*string path = folder.SelectedPath + "\\"
-                 + GenerateFilename(books[LB.SelectedIndex].Name);*/
-                /*string path = folder.SelectedPath + "\\"
                      + books[LB.SelectedIndex].Name + ".txt";*/
                 string path = $"{folder.SelectedPath}\\{books[LB.SelectedIndex].Name}.txt";
-
-                //client.DownloadFileAsync(new Uri(books[LB.SelectedIndex].Url), path);
-                client.DownloadFileAsync(new Uri(uri), path);
-                //System.Windows.Forms.MessageBox.Show("Скачано!");
+                client.DownloadFileAsync(new Uri(books[LB.SelectedIndex].Url), path);
 
             }
-            catch (Exception ex)
+            catch (WebException ex)
             {
                 //System.Windows.MessageBox.Show(ex.Message);
                 System.Windows.Forms.MessageBox.Show(ex.Message);
             }
-
-
+        }
+        async void DowloadAll()
+        {
+            WebClient client = new WebClient();
+            if (folder.SelectedPath.Length == 0 || folder.SelectedPath == null)
+            {
+                if (folder.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+                    return;
+            }
+            PB.Value = 0;
+            PB.Maximum = books.Count;
+            for (int i = 0; i < books.Count; i++)
+            {
+                string path = $"{folder.SelectedPath}\\{books[i].Name}.txt";
+                LB1.Content = books[i].Name;
+                await Task.Run(() => client.DownloadFile(new Uri(books[i].Url), path));
+                await Task.Run(() => Dispatcher.Invoke(new Action(() => { PB.Value += 1; })));
+            }
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                DowloadAll();
+            }
+            catch (WebException ex)
+            {
+                System.Windows.Forms.MessageBox.Show(ex.Message);
+            }
         }
     }
 
