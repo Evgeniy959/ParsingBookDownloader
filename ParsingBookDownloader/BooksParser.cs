@@ -9,7 +9,7 @@ namespace ParsingBookDownloader
     class BooksParser
     {
         List<Book> books;
-        string baseUrl = "https://tululu.org/txt.php?id=";
+        string startUrl = "https://tululu.org/txt.php?id=";
 
         public List<Book> GetBooks(string site)
         {
@@ -23,7 +23,7 @@ namespace ParsingBookDownloader
                 index = site.IndexOf("/");
                 if (index >= 0)
                 {
-                    url = baseUrl + site.Remove(index);
+                    url = startUrl + site.Remove(index);
                     site = site.Remove(0, index + 3);
                     name = site.Remove(site.IndexOf("</a>"));
                     books.Add(new Book() { Name = name, Url = url });
