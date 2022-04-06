@@ -33,10 +33,11 @@ namespace ParsingBookDownloader
         {
             LableNameBook.Content = $"{_book.Name}({_book.Author})";
 
-            if (_book.Txt != null && _book.Txt.Length > 0)
+            /*if (_book.Txt != null && _book.Txt.Length > 0)
             {
                 LBUrlsDownload.Items.Add("TXT");
-            }
+            }*/
+            LBUrlsDownload.Items.Add("TXT");
             if (_book.Zip != null && _book.Zip.Length > 0)
             {
                 LBUrlsDownload.Items.Add("ZIP");
