@@ -65,7 +65,8 @@ namespace ParsingBookDownloader
                 /*string path = folder.SelectedPath + "\\"
                      + books[LB.SelectedIndex].Name + ".txt";*/
                 string path = $"{folder.SelectedPath}\\{books[LB.SelectedIndex].Name}.txt";
-                client.DownloadFileAsync(new Uri(books[LB.SelectedIndex].Url), path);
+                //client.DownloadFileAsync(new Uri(books[LB.SelectedIndex].Url), path);
+                client.DownloadFile(new Uri(books[LB.SelectedIndex].Url), path);
 
             }
             catch (WebException ex)
