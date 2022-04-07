@@ -67,6 +67,36 @@ namespace ParsingBookDownloader
             result += ".txt";
             return result;
         }
+        /*public void DownloadF()
+        {
+            if (LB.SelectedIndex < 0)
+                return;
+            if (folder.SelectedPath.Length == 0 || folder.SelectedPath == null)
+            {
+                if (folder.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+                    return;
+            }
+            WebClient client = new WebClient();
+            Uri url = new Uri(books[LB.SelectedIndex].Url);*/                        
+            /*string path = folder.SelectedPath + "\\"
+            + GenerateFilename(books[LB.SelectedIndex].Name);*/
+            /*string path = folder.SelectedPath + "\\"
+                 + books[LB.SelectedIndex].Name + ".txt";*/
+            /*string path = $"{folder.SelectedPath}\\{books[LB.SelectedIndex].Name}.txt";
+
+            //client.DownloadFileAsync(new Uri(books[LB.SelectedIndex].Url), path);
+            //client.DownloadFileAsync(url, path);
+            if (url == null)
+            {
+                throw new Exception("Ссылка не существует");
+            }
+            else client.DownloadFile(url, path);
+
+
+            //System.Windows.Forms.MessageBox.Show("Скачано!");
+
+
+        }*/
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
@@ -79,23 +109,25 @@ namespace ParsingBookDownloader
             }
             WebClient client = new WebClient();
             Uri url = new Uri(books[LB.SelectedIndex].Url);
-            if (url == null)
-            {
-                throw new Exception("Ссылка не существует");
-            }
             try
             {
+                //DownloadF();
                 /*string path = folder.SelectedPath + "\\"
-                 + GenerateFilename(books[LB.SelectedIndex].Name);*/
+            + GenerateFilename(books[LB.SelectedIndex].Name);*/
                 /*string path = folder.SelectedPath + "\\"
                      + books[LB.SelectedIndex].Name + ".txt";*/
                 string path = $"{folder.SelectedPath}\\{books[LB.SelectedIndex].Name}.txt";
 
                 //client.DownloadFileAsync(new Uri(books[LB.SelectedIndex].Url), path);
                 //client.DownloadFileAsync(url, path);
-                client.DownloadFile(url, path);
-                //System.Windows.Forms.MessageBox.Show("Скачано!");
+                if (url == null)
+                {
+                    throw new Exception("Ссылка не существует");
+                }
+                else client.DownloadFile(url, path);
 
+
+                //System.Windows.Forms.MessageBox.Show("Скачано!");
             }
             catch (Exception ex)
             {
